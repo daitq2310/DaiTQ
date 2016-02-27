@@ -1,0 +1,68 @@
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+/**
+ * Created by Quang Đại on 27/2/2016.
+ */
+public class gamePlane extends Frame implements MouseMotionListener {
+    int planeX, planeY, mx, my;
+    boolean status;
+    BufferedImage backGround, plane;
+
+    public gamePlane() {
+        this.setTitle("Plane By Mouse");
+        this.setSize(400, 640);
+        this.setVisible(true);
+        this.setResizable(false);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                System.exit(0);
+            }
+        });
+        try {
+            backGround = ImageIO.read(new File("Resources/Background.png"));
+            plane = ImageIO.read(new File("Resources/PLANE2.png"));
+        } catch (Exception e) {
+
+        }
+        addMouseMotionListener(this);
+        planeX = (getWidth() - plane.getWidth() / 2) / 2;
+        planeY = (getHeight() - plane.getHeight() / 2) / 2;
+        repaint();
+    }
+
+    @Override
+    public void paint(Graphics graphics) {
+        super.paint(graphics);
+        graphics.drawImage(backGround, 0, 0, null);
+        graphics.drawImage(plane, planeX, planeY, null);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent mouseEvent) {
+        planeX = mouseEvent.getX();
+        planeY = mouseEvent.getY();
+        
+        repaint();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent mouseEvent) {
+
+    }
+
+}
+
+--------------------------
+
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        gamePlane gp = new gamePlane();
+    }
+}
