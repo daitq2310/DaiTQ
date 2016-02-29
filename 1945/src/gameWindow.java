@@ -24,12 +24,12 @@ public class gameWindow extends Frame implements Runnable, KeyListener, MouseMot
     public gameWindow() {
         this.setTitle("1945");
         this.setSize(400, 640);
-
+        //-------------------------------------------------------
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
         this.setLocation(x, y);
-
+        //-------------------------------------------------------
         this.setResizable(false);
         this.setVisible(true);
         this.addWindowListener(new WindowAdapter() {
@@ -38,18 +38,18 @@ public class gameWindow extends Frame implements Runnable, KeyListener, MouseMot
                 System.exit(0);
             }
         });
-
+        //-------------------------------------------------------
         p1 = new Plane();
         p2 = new Plane();
         b1 = new Bullet();
+        sb1 = new ShootBullet(this, b1);
+        //-------------------------------------------------------
         Point pointCursor = new Point(0, 0);
         BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT);
         Cursor invisibleCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, pointCursor, "InvisibleCursor");
         setCursor(invisibleCursor);
-
+        //-------------------------------------------------------
         p1.setSpeed(3);
-        //sb1 = new ShootBullet(this);
-
         try {
             backGround = ImageIO.read(new File("Resources/Background.png"));
             p1.setSprite(ImageIO.read(new File("Resources/PLANE1.png")));
@@ -67,8 +67,8 @@ public class gameWindow extends Frame implements Runnable, KeyListener, MouseMot
 
         repaint();
 
-        b1.setBulletX(p1.getPositionX() + p1.getSprite().getWidth() / 2 - b1.getBulletSprite().getWidth() / 2);
-        b1.setBulletY(p1.getPositionY() - p1.getSprite().getHeight() / 2);
+        b1.setBulletX(p2.getPositionX() + p2.getSprite().getWidth() / 2 - b1.getBulletSprite().getWidth() / 2);
+        b1.setBulletY(p2.getPositionY() - p2.getSprite().getHeight() / 2);
     }
 
     @Override
@@ -113,8 +113,8 @@ public class gameWindow extends Frame implements Runnable, KeyListener, MouseMot
             p1.setDirection(2);
         }
         if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
-            System.out.println("5");
-
+            b1.setBulletX(p2.getPositionX() + p2.getSprite().getWidth() / 2 - b1.getBulletSprite().getWidth() / 2);
+            b1.setBulletY(p2.getPositionY() - p2.getSprite().getHeight() / 2);
             //sb1.addBullet(p1.getSprite().getWidth(),p1.getSprite().getHeight());
 
         }
@@ -130,9 +130,10 @@ public class gameWindow extends Frame implements Runnable, KeyListener, MouseMot
         while (true) {
             repaint();
             p1.update();
-
             b1.update();
-            repaint();
+            //sb1.update();
+
+            //repaint();
             try {
                 Thread.sleep(1000 / 6);
             } catch (InterruptedException e) {
