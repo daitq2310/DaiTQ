@@ -11,15 +11,20 @@ public class ShootBullet {
     private LinkedList<Bullet> listBullet = new LinkedList<>();
     Bullet bullet;
     gameWindow game;
+
     private void move() {
         for (int i = 0; i < listBullet.size(); i++) {
             bullet = listBullet.get(i);
+            if (bullet.getBulletY() < 0) {
+                deleBullet(bullet);
+            }
             bullet.update();
         }
     }
 
-    public ShootBullet(gameWindow game){
-        this.game=game;
+    public ShootBullet(gameWindow game, Bullet bullet) {
+        this.game = game;
+        this.bullet=bullet;
     }
 
     public void draw(Graphics g) {
