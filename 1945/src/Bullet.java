@@ -1,60 +1,77 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Quang Đại on 29/2/2016.
  */
-public class Bullet {
-    private int bullet, bulletX, bulletY;
-    private BufferedImage bulletSprite;
+public class Bullet extends GameObject {
 
-//    public Bullet(int bulletX, int bulletY) {
-//        this.bulletX = bulletX;
-//        this.bulletY = bulletY;
-//    }
+    private int speed, typeBullet;
+
+    private Bullet() {
+        this.positionX = 0;
+        this.positionY = 0;
+    }
+
+    public Bullet(int positionX, int positionY, int speed, int typeBullet) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.speed = speed;
+        switch (typeBullet) {
+            case 1:
+                try {
+                    this.sprite = ImageIO.read(new File("Resources/Dan1.png"));
+                } catch (IOException e) {
+
+                }
+                break;
+            case 2:
+                try {
+                    this.sprite = ImageIO.read(new File("Resources/Dan2.png"));
+                } catch (IOException e) {
+
+                }
+                break;
+        }
+    }
 
     private void move() {
-        this.bulletY -= 10;
+        this.positionY -= this.speed;
     }
 
     public void draw(Graphics g) {
-        g.drawImage(this.bulletSprite, this.bulletX, this.bulletY, null);
+        g.drawImage(this.sprite, this.positionX, this.positionY, null);
     }
 
     public void update() {
-        move();
+        this.move();
     }
 
-    public void setBullet(int bullet) {
-        this.bullet = bullet;
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
     }
 
-    public void setBulletSprite(BufferedImage bulletSprite) {
-        this.bulletSprite = bulletSprite;
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
     }
 
-    public void setBulletX(int bulletX) {
-        this.bulletX = bulletX;
+    public int getPositionX() {
+        return positionX;
     }
 
-    public void setBulletY(int bulletY) {
-        this.bulletY = bulletY;
+    public void setTypeBullet(int typeBullet) {
+        this.typeBullet = typeBullet;
     }
 
-    public BufferedImage getBulletSprite() {
-        return bulletSprite;
+    public int getTypeBullet() {
+
+        return typeBullet;
     }
 
-    public int getBullet() {
-        return bullet;
-    }
-
-
-    public int getBulletX() {
-        return bulletX;
-    }
-
-    public int getBulletY() {
-        return bulletY;
+    public int getPositionY() {
+        return positionY;
     }
 }

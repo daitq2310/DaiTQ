@@ -2,7 +2,7 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        gameWindow gw = new gameWindow();
+        GameWindow gw = new GameWindow();
         Thread t = new Thread(gw);
                 t.start();
     }
