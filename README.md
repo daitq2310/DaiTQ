@@ -1,2 +1,2 @@
-# DaiTQ
-Project 1945 mới chỉ bắn được 1 viên / lần và em đang thử sử dụng LinkedList 
+# DaiTQ Project 1945
+2/3/15: Upload file backup
