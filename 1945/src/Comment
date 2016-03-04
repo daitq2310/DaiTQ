@@ -1,2 +1,10 @@
 -2.
     khi bắn
+
+-3.
+    1. máy bay đẹp vkl :v
+    2. còn 1 số thuộc tính vẫn để public
+    3. chưa tahyas con bay elip đâu
+    4. khi chia lmaf các loại máy bay. Phải thực hiện kế thừa từ PlaneEnemy. sau này có 10 loại thì ko thể nào cứ dùng 1 lớp
+    được. Kế thừa sau này để dễ quản lí hơn
+    5. không thấy con bắn 3 tia đâu
