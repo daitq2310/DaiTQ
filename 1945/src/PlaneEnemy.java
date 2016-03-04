@@ -7,37 +7,40 @@ import java.util.Vector;
 /**
  * Created by Quang Đại on 1/3/2016.
  */
-public class PlaneEnemy extends GameObject {
-    private int speed;
+public class PlaneEnemy extends PlaneAbstract {
     private int count = 0;
-
-    public int getSpeed() {
-        return speed;
-    }
-
     private Vector<Bullet> vecBul = new Vector<Bullet>();
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
 
     private PlaneEnemy() {
 
     }
 
     public void shoot() {
-        Bullet bullet = new Bullet(positionX + 30, positionY + 59, -5,1);
-        vecBul.add(bullet);
+        Bullet bullet1 = new Bullet(positionX + 30 + 10, positionY + 59, -5, 1);
+        Bullet bullet2 = new Bullet(positionX + 30 - 10, positionY + 59, -5, 1);
+        vecBul.add(bullet1);
+        vecBul.add(bullet2);
     }
 
-    public PlaneEnemy(int positionX, int positionY, int speed) {
+    public PlaneEnemy(int positionX, int positionY, int speed, int planeType) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.speed = speed;
-        try {
-            this.sprite = ImageIO.read(new File("Resources/PlaneEnemy12.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        switch (planeType) {
+            case 1:
+                try {
+                    this.sprite = ImageIO.read(new File("Resources/PlaneEnemy1.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 2:
+                try {
+                    this.sprite = ImageIO.read(new File("Resources/PlaneEnemy2.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 
@@ -49,6 +52,10 @@ public class PlaneEnemy extends GameObject {
         if (this.positionX >= 400-this.getSprite().getWidth()) {
             this.speed = -this.speed;
         }
+
+        //circle ellipse example
+//        this.positionX += 4*Math.sin(45);
+//        this.positionY += 4*Math.cos(45);
     }
 
     public void update() {//60 lan 1 giay

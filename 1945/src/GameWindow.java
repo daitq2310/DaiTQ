@@ -136,15 +136,13 @@ public class GameWindow extends Frame implements Runnable {
     }
 
     private void initPlane() {
-
-        planeMoveByKey = new Plane(200, 200, 3, 4);
+        planeMoveByKey = new Plane(200, 200, 3, 3);
         planeMoveByMouse = new Plane(300, 300, 4, 2);
-        vectorPlaneEnemy.add(new PlaneEnemy(200, 200, 1));
-        vectorPlaneEnemy.add(new PlaneEnemy(150, 100, 2));
-        vectorPlaneEnemy.add(new PlaneEnemy(100, 150, 3));
-        vectorPlaneEnemy.add(new PlaneEnemy(250, 120, 4));
-        vectorPlaneEnemy.add(new PlaneEnemy(300, 90, 5));
-
+        vectorPlaneEnemy.add(new PlaneEnemy(200, 200, 1, 1));
+        vectorPlaneEnemy.add(new PlaneEnemy(150, 100, 2, 1));
+        vectorPlaneEnemy.add(new PlaneEnemy(100, 150, 3, 2));
+        vectorPlaneEnemy.add(new PlaneEnemy(250, 120, 4, 2));
+        vectorPlaneEnemy.add(new PlaneEnemy(300, 90, 5, 2));
     }
 
 
@@ -158,7 +156,7 @@ public class GameWindow extends Frame implements Runnable {
             planeEnemy.draw(g);
         }
         repaint();
-       }
+    }
 
 
     @Override

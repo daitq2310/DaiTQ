@@ -1,6 +1,12 @@
+import javafx.scene.transform.Rotate;
+
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
@@ -10,6 +16,7 @@ import java.io.IOException;
 public class Bullet extends GameObject {
 
     private int speed, typeBullet;
+    private double x, y, angel;
 
     private Bullet() {
         this.positionX = 0;
@@ -36,6 +43,11 @@ public class Bullet extends GameObject {
                 }
                 break;
         }
+    }
+
+    public void moveForward() {
+        x += Math.cos(this.angel) * this.speed;
+        y += Math.sin(this.angel) * this.speed;
     }
 
     private void move() {
@@ -73,5 +85,30 @@ public class Bullet extends GameObject {
 
     public int getPositionY() {
         return positionY;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getX() {
+
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getAngel() {
+        return angel;
+    }
+
+    public void setAngel(double angel) {
+        this.angel = angel;
     }
 }

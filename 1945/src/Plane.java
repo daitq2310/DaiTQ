@@ -8,9 +8,7 @@ import java.util.Vector;
 /**
  * Created by Quang Đại on 28/2/2016.
  */
-public class Plane {
-    private int positionX, positionY, damage, health, speed, direction, planeType;
-    private BufferedImage sprite;
+public class Plane extends PlaneAbstract {
 
     private Plane() {
         this.positionX = 0;
@@ -73,7 +71,7 @@ public class Plane {
     }
 
     public void shoot() {
-        Bullet b = new Bullet(this.positionX + 30, this.getPositionY(), 10,2);
+        Bullet b = new Bullet(this.positionX + 25, this.getPositionY(), 10, 2);
         vecBul.add(b);
     }
 
@@ -116,67 +114,5 @@ public class Plane {
         for (Bullet bul : vecBul) {
             bul.update();
         }
-
-    }
-
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
-    }
-
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public void setPlaneType(int planeType) {
-        this.planeType = planeType;
-    }
-
-    public int getPositionX() {
-
-        return positionX;
-    }
-
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public int getPlaneType() {
-        return planeType;
-    }
-
-    public BufferedImage getSprite() {
-        return sprite;
     }
 }
