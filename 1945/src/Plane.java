@@ -70,8 +70,9 @@ public class Plane extends PlaneAbstract {
         }
     }
 
+    @Override
     public void shoot() {
-        Bullet b = new Bullet(this.positionX + 25, this.getPositionY(), 10, 2);
+        Bullet b = new Bullet((int)this.positionX + 25, (int)this.getPositionY(), 10, 2,1);
         vecBul.add(b);
     }
 
@@ -102,13 +103,15 @@ public class Plane extends PlaneAbstract {
         }
     }
 
+    @Override
     public void draw(Graphics g) {
-        g.drawImage(sprite, positionX, positionY, null);
+        g.drawImage(sprite, (int)positionX,(int)positionY, null);
         for (Bullet bul : vecBul) {
             bul.draw(g);
         }
     }
 
+    @Override
     public void update() {
         this.move();
         for (Bullet bul : vecBul) {

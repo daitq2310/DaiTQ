@@ -32,11 +32,13 @@ public class GameWindow extends Frame implements Runnable {
     BufferedImage background;
     Plane planeMoveByKey, planeMoveByMouse;
     Vector<PlaneEnemy> vectorPlaneEnemy = new Vector<PlaneEnemy>();
+    Vector<OtherObject> vectorObject = new Vector<>();
+    Vector<RandomBird> vectorBird = new Vector<>();
 
     public GameWindow() {
 
         this.setTitle("1945");
-        this.setSize(400, 640);
+        this.setSize(1000, 700);
         //-------------------------------------------------------
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
@@ -58,7 +60,7 @@ public class GameWindow extends Frame implements Runnable {
         setCursor(invisibleCursor);
         //-------------------------------------------------------
         try {
-            background = ImageIO.read(new File("Resources/Background.png"));
+            background = ImageIO.read(new File("Resources/Background1.jpg"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,35 +140,62 @@ public class GameWindow extends Frame implements Runnable {
     private void initPlane() {
         planeMoveByKey = new Plane(200, 200, 3, 3);
         planeMoveByMouse = new Plane(300, 300, 4, 2);
-        vectorPlaneEnemy.add(new PlaneEnemy(200, 200, 1, 1));
-        vectorPlaneEnemy.add(new PlaneEnemy(150, 100, 2, 1));
-        vectorPlaneEnemy.add(new PlaneEnemy(100, 150, 3, 2));
-        vectorPlaneEnemy.add(new PlaneEnemy(250, 120, 4, 2));
-        vectorPlaneEnemy.add(new PlaneEnemy(300, 90, 5, 2));
+        vectorPlaneEnemy.add(new PlaneEnemy(200, 200, 1, 1, 1, 1));
+        vectorPlaneEnemy.add(new PlaneEnemy(150, 100, 2, 1, 2, 1));
+        vectorPlaneEnemy.add(new PlaneEnemy(100, 150, 3, 2, 1, 2));
+        vectorPlaneEnemy.add(new PlaneEnemy(250, 120, 4, 2, 3, 2));
+        vectorPlaneEnemy.add(new PlaneEnemy(300, 90, 5, 2, 3, 1));
+        vectorPlaneEnemy.add(new PlaneEnemy(200, 90, 5, 2, 1, 3));
+        vectorPlaneEnemy.add(new PlaneEnemy(150, 90, 5, 1, 2, 3));
+        vectorPlaneEnemy.add(new PlaneEnemy(100, 90, 5, 2, 3, 3));
+        vectorPlaneEnemy.add(new PlaneEnemy(50, 90, 5, 1, 2, 3));
+        vectorObject.add(new OtherObject(100, 550, 1));
+        vectorObject.add(new OtherObject(800, 500, 2));
+        vectorObject.add(new OtherObject(700, 450, 3));
+        vectorObject.add(new OtherObject(100, 200, 3));
+        vectorObject.add(new OtherObject(500, 10, 3));
+        vectorBird.add(new RandomBird(20, 200));
+        vectorBird.add(new RandomBird(100, 150));
     }
-
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(background, 0, 0, null);
-        planeMoveByKey.draw(g);
-        planeMoveByMouse.draw(g);
+        for(OtherObject otherObject : vectorObject){
+            otherObject.draw(g);
+        }
+
+        for(RandomBird randomBird : vectorBird){
+            randomBird.draw(g);
+        }
+
         for (PlaneEnemy planeEnemy : vectorPlaneEnemy) {
             planeEnemy.draw(g);
         }
-        repaint();
-    }
 
+        planeMoveByKey.draw(g);
+        planeMoveByMouse.draw(g);
+
+    }
 
     @Override
     public void run() {
         while (true) {
-            planeMoveByKey.update();
-            planeMoveByMouse.update();
+            for(OtherObject otherObject : vectorObject){
+                otherObject.update();
+            }
+
+            for(RandomBird randomBird : vectorBird){
+                randomBird.update();
+            }
+
             for (PlaneEnemy planeEnemy : vectorPlaneEnemy) {
                 planeEnemy.update();
             }
+
+            planeMoveByKey.update();
+            planeMoveByMouse.update();
             repaint();
             try {
                 Thread.sleep(17);

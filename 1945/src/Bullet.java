@@ -15,18 +15,18 @@ import java.io.IOException;
  */
 public class Bullet extends GameObject {
 
-    private int speed, typeBullet;
-    private double x, y, angel;
+    private int speed, typeBullet, typeMove;
 
     private Bullet() {
         this.positionX = 0;
         this.positionY = 0;
     }
 
-    public Bullet(int positionX, int positionY, int speed, int typeBullet) {
+    public Bullet(int positionX, int positionY, int speed, int typeBullet, int typeMove) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.speed = speed;
+        this.typeMove = typeMove;
         switch (typeBullet) {
             case 1:
                 try {
@@ -45,70 +45,49 @@ public class Bullet extends GameObject {
         }
     }
 
-    public void moveForward() {
-        x += Math.cos(this.angel) * this.speed;
-        y += Math.sin(this.angel) * this.speed;
+    public void move() {
+        if (this.typeMove == 1) {
+            this.positionY -= this.speed;
+        } else if (this.typeMove == 2) {
+            this.positionX -= 4;
+            this.positionY += 4;
+        } else if (this.typeMove == 3) {
+            this.positionX += 4;
+            this.positionY += 4;
+        }
     }
 
-    private void move() {
-        this.positionY -= this.speed;
-    }
-
-    public void draw(Graphics g) {
-        g.drawImage(this.sprite, this.positionX, this.positionY, null);
-    }
-
+    @Override
     public void update() {
         this.move();
     }
 
-    public void setPositionX(int positionX) {
-        this.positionX = positionX;
+    @Override
+    public void draw(Graphics g) {
+        g.drawImage(getSprite(), (int) this.positionX, (int) this.positionY, null);
     }
 
-    public void setPositionY(int positionY) {
-        this.positionY = positionY;
+    public int getSpeed() {
+        return speed;
     }
 
-    public int getPositionX() {
-        return positionX;
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getTypeBullet() {
+        return typeBullet;
     }
 
     public void setTypeBullet(int typeBullet) {
         this.typeBullet = typeBullet;
     }
 
-    public int getTypeBullet() {
-
-        return typeBullet;
+    public int getTypeMove() {
+        return typeMove;
     }
 
-    public int getPositionY() {
-        return positionY;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getX() {
-
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getAngel() {
-        return angel;
-    }
-
-    public void setAngel(double angel) {
-        this.angel = angel;
+    public void setTypeMove(int typeMove) {
+        this.typeMove = typeMove;
     }
 }
