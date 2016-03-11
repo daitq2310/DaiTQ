@@ -8,16 +8,13 @@ import java.util.Vector;
 /**
  * Created by Quang Đại on 28/2/2016.
  */
-public class Plane extends PlaneAbstract {
+public class Plane extends PlaneAbstract implements Subject {
+    private Vector<Observer> observerVector = new Vector<>();
 
     private Plane() {
         this.positionX = 0;
         this.positionY = 0;
         this.speed = 0;
-        try {
-            this.sprite = ImageIO.read(new File("Resources/Plane1.png"));
-        } catch (IOException e) {
-        }
     }
 
     public Plane(int positionX, int positionY, int speed, int planeType) {
@@ -29,42 +26,36 @@ public class Plane extends PlaneAbstract {
                 try {
                     this.sprite = ImageIO.read(new File("Resources/Plane1.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
             case 2:
                 try {
                     this.sprite = ImageIO.read(new File("Resources/Plane2.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
             case 3:
                 try {
                     this.sprite = ImageIO.read(new File("Resources/Plane3.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
             case 4:
                 try {
                     this.sprite = ImageIO.read(new File("Resources/Plane4.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
             case 5:
                 try {
                     this.sprite = ImageIO.read(new File("Resources/PlaneEnemy1.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
             case 6:
                 try {
                     this.sprite = ImageIO.read(new File("Resources/PlaneEnemy2.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
         }
@@ -72,11 +63,11 @@ public class Plane extends PlaneAbstract {
 
     @Override
     public void shoot() {
-        Bullet b = new Bullet((int)this.positionX + 25, (int)this.getPositionY(), 10, 2,1);
+        BulletPlayer b = new BulletPlayer((int) this.positionX + 25, (int) this.getPositionY(), 10);
         vecBul.add(b);
     }
 
-    private Vector<Bullet> vecBul = new Vector<Bullet>();
+    private Vector<BulletPlayer> vecBul = new Vector<>();
 
     public void move(int x, int y) {
         this.positionX = x;
@@ -105,8 +96,8 @@ public class Plane extends PlaneAbstract {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(sprite, (int)positionX,(int)positionY, null);
-        for (Bullet bul : vecBul) {
+        g.drawImage(sprite, (int) positionX, (int) positionY, null);
+        for (BulletPlayer bul : vecBul) {
             bul.draw(g);
         }
     }
@@ -114,8 +105,35 @@ public class Plane extends PlaneAbstract {
     @Override
     public void update() {
         this.move();
-        for (Bullet bul : vecBul) {
+        for (BulletPlayer bul : vecBul) {
             bul.update();
+        }
+    }
+
+    public int getWidth() {
+        return sprite.getWidth();
+    }
+
+    public int getHeight() {
+        return sprite.getHeight();
+    }
+
+    @Override
+    public void addObserver(Observer ob) {
+        observerVector.add(ob);
+    }
+
+    @Override
+    public void removeObserver(Observer ob) {
+        observerVector.remove(ob);
+    }
+
+    @Override
+    public void notifiObserver() {
+        if (true) {
+            for (Observer ob : observerVector) {
+                ob.update("Bo Vua An Duoc Qua");
+            }
         }
     }
 }

@@ -30,10 +30,12 @@ public class GameWindow extends Frame implements Runnable {
     //end
 
     BufferedImage background;
-    Plane planeMoveByKey, planeMoveByMouse;
-    Vector<PlaneEnemy> vectorPlaneEnemy = new Vector<PlaneEnemy>();
+    Vector<PlaneEnemy> vectorPlaneEnemy;
     Vector<OtherObject> vectorObject = new Vector<>();
     Vector<RandomBird> vectorBird = new Vector<>();
+    BulletEnemy b;
+    Vector<GiftBox> giftBoxVector = new Vector<>();
+    GiftBox giftBox;
 
     public GameWindow() {
 
@@ -61,19 +63,18 @@ public class GameWindow extends Frame implements Runnable {
         //-------------------------------------------------------
         try {
             background = ImageIO.read(new File("Resources/Background1.jpg"));
-
         } catch (IOException e) {
-            e.printStackTrace();
         }
+        vectorPlaneEnemy = PlaneEnemyManager.getInstance().getPlaneEnemyVector();
         initPlane();
+        PlaneManager.getInstance().getPlaneMoveByKey().setHealth(200);
+        PlaneManager.getInstance().getPlaneMoveByMouse().setHealth(200);
 
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
-                    planeMoveByMouse.shoot();
-
+                    PlaneManager.getInstance().getPlaneMoveByMouse().shoot();
                 }
             }
 
@@ -105,7 +106,7 @@ public class GameWindow extends Frame implements Runnable {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                planeMoveByMouse.move(e.getX(), e.getY());
+                PlaneManager.getInstance().getPlaneMoveByMouse().move(e.getX(), e.getY());
             }
         });
 
@@ -118,28 +119,26 @@ public class GameWindow extends Frame implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_A) {
-                    planeMoveByKey.setDirection(3);
+                    PlaneManager.getInstance().getPlaneMoveByKey().setDirection(3);
                 } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                    planeMoveByKey.setDirection(4);
+                    PlaneManager.getInstance().getPlaneMoveByKey().setDirection(4);
                 } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                    planeMoveByKey.setDirection(1);
+                    PlaneManager.getInstance().getPlaneMoveByKey().setDirection(1);
                 } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                    planeMoveByKey.setDirection(2);
+                    PlaneManager.getInstance().getPlaneMoveByKey().setDirection(2);
                 } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    planeMoveByKey.shoot();
+                    PlaneManager.getInstance().getPlaneMoveByKey().shoot();
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                planeMoveByKey.setDirection(0);
+                PlaneManager.getInstance().getPlaneMoveByKey().setDirection(0);
             }
         });
     }
 
     private void initPlane() {
-        planeMoveByKey = new Plane(200, 200, 3, 3);
-        planeMoveByMouse = new Plane(300, 300, 4, 2);
         vectorPlaneEnemy.add(new PlaneEnemy(200, 200, 1, 1, 1, 1));
         vectorPlaneEnemy.add(new PlaneEnemy(150, 100, 2, 1, 2, 1));
         vectorPlaneEnemy.add(new PlaneEnemy(100, 150, 3, 2, 1, 2));
@@ -156,37 +155,57 @@ public class GameWindow extends Frame implements Runnable {
         vectorObject.add(new OtherObject(500, 10, 3));
         vectorBird.add(new RandomBird(20, 200));
         vectorBird.add(new RandomBird(100, 150));
+        giftBoxVector.add(new GiftBox(100, 0, 3));
+        giftBoxVector.add(new GiftBox(800, 0, 2));
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(background, 0, 0, null);
-        for(OtherObject otherObject : vectorObject){
+        //--------------------------------------------
+        g.setColor(Color.GRAY);
+        g.fillRect(20, 40, 200, 30);
+        g.setColor(Color.GREEN);
+        g.fillRect(20, 40, PlaneManager.getInstance().getPlaneMoveByKey().getHealth(), 30);
+        g.setColor(Color.WHITE);
+        g.drawRect(20, 40, 200, 30);
+        //--------------------------------------------
+        g.setColor(Color.GRAY);
+        g.fillRect(780, 40, 200, 30);
+        g.setColor(Color.GREEN);
+        g.fillRect(780, 40, PlaneManager.getInstance().getPlaneMoveByMouse().getHealth(), 30);
+        g.setColor(Color.WHITE);
+        g.drawRect(780, 40, 200, 30);
+//        //--------------------------------------------
+        for (OtherObject otherObject : vectorObject) {
             otherObject.draw(g);
         }
 
-        for(RandomBird randomBird : vectorBird){
+        for (RandomBird randomBird : vectorBird) {
             randomBird.draw(g);
         }
+
+        for (GiftBox giftBox : giftBoxVector) {
+            giftBox.draw(g);
+        }
+
+        PlaneManager.getInstance().getPlaneMoveByKey().draw(g);
+        PlaneManager.getInstance().getPlaneMoveByMouse().draw(g);
 
         for (PlaneEnemy planeEnemy : vectorPlaneEnemy) {
             planeEnemy.draw(g);
         }
-
-        planeMoveByKey.draw(g);
-        planeMoveByMouse.draw(g);
-
     }
 
     @Override
     public void run() {
         while (true) {
-            for(OtherObject otherObject : vectorObject){
+            for (OtherObject otherObject : vectorObject) {
                 otherObject.update();
             }
 
-            for(RandomBird randomBird : vectorBird){
+            for (RandomBird randomBird : vectorBird) {
                 randomBird.update();
             }
 
@@ -194,13 +213,20 @@ public class GameWindow extends Frame implements Runnable {
                 planeEnemy.update();
             }
 
-            planeMoveByKey.update();
-            planeMoveByMouse.update();
+            for (GiftBox giftBox : giftBoxVector) {
+                giftBox.update();
+            }
+
+            if(GiftBox.destroyAll){
+                vectorPlaneEnemy.clear();
+            }
+
+            PlaneManager.getInstance().getPlaneMoveByKey().update();
+            PlaneManager.getInstance().getPlaneMoveByMouse().update();
             repaint();
             try {
                 Thread.sleep(17);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }

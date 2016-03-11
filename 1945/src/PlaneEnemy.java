@@ -7,12 +7,11 @@ import java.util.Vector;
 /**
  * Created by Quang Đại on 1/3/2016.
  */
-public class PlaneEnemy extends PlaneAbstract {
+public class PlaneEnemy extends PlaneAbstract implements Observer {
     private int count = 0, shootType, e = 0, styleMove;
-    private Vector<Bullet> vecBul = new Vector<Bullet>();
+    private Vector<BulletEnemy> vecBul = new Vector<>();
 
     private PlaneEnemy() {
-
     }
 
     public PlaneEnemy(int positionX, int positionY, int speed, int planeType, int shootType, int styleMove) {
@@ -26,14 +25,12 @@ public class PlaneEnemy extends PlaneAbstract {
                 try {
                     this.sprite = ImageIO.read(new File("Resources/PlaneEnemy1.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
             case 2:
                 try {
                     this.sprite = ImageIO.read(new File("Resources/PlaneEnemy2.png"));
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
                 break;
         }
@@ -47,10 +44,6 @@ public class PlaneEnemy extends PlaneAbstract {
         if (this.positionX >= 1000 - this.getSprite().getWidth()) {
             this.speed = -this.speed;
         }
-
-        //circle ellipse example
-//        this.positionX += 4*Math.sin(45);
-//        this.positionY += 4*Math.cos(45);
     }
 
     public void moveCircleEllipse() {
@@ -81,7 +74,7 @@ public class PlaneEnemy extends PlaneAbstract {
             this.shoot();
             count = 0;
         }
-        for (Bullet bul : vecBul) {
+        for (BulletEnemy bul : vecBul) {
             bul.update();
         }
         if (styleMove == 1)
@@ -94,7 +87,7 @@ public class PlaneEnemy extends PlaneAbstract {
 
     @Override
     public void draw(Graphics g) {
-        for (Bullet bul : vecBul) {
+        for (BulletEnemy bul : vecBul) {
             bul.draw(g);
         }
         g.drawImage(sprite, (int) this.positionX, (int) this.positionY, null);
@@ -103,29 +96,35 @@ public class PlaneEnemy extends PlaneAbstract {
     @Override
     public void shoot() {
         if (this.shootType == 1) {
-            Bullet bullet = new Bullet((int) this.positionX + 20, (int) this.positionY + 23, -7, 1, 1);
+            BulletEnemy bullet = new BulletEnemy((int) this.positionX + 20, (int) this.positionY + 23, -7, 1);
             vecBul.add(bullet);
         } else if (this.shootType == 2) {
-            Bullet bullet = new Bullet((int) this.positionX + 20, (int) this.positionY + 23, -7, 1, 1);
-            Bullet bullet2 = new Bullet((int) this.positionX + 20, (int) this.positionY + 60, -7, 1, 1);
+            BulletEnemy bullet = new BulletEnemy((int) this.positionX + 20, (int) this.positionY + 23, -7, 1);
+            BulletEnemy bullet2 = new BulletEnemy((int) this.positionX + 20, (int) this.positionY + 60, -7, 1);
             vecBul.add(bullet);
             vecBul.add(bullet2);
         } else if (this.shootType == 3) {
-            Bullet bullet = new Bullet((int) this.positionX + 20, (int) this.positionY + 23, -7, 1, 1);
-            Bullet bullet2 = new Bullet((int) this.positionX + 20, (int) this.positionY + 23, 2, 1, 2);
-            Bullet bullet3 = new Bullet((int) this.positionX + 20, (int) this.positionY + 23, 2, 1, 3);
+            BulletEnemy bullet = new BulletEnemy((int) this.positionX + 20, (int) this.positionY + 23, -7, 1);
+            BulletEnemy bullet2 = new BulletEnemy((int) this.positionX + 20, (int) this.positionY + 23, 2, 2);
+            BulletEnemy bullet3 = new BulletEnemy((int) this.positionX + 20, (int) this.positionY + 23, 2, 3);
             vecBul.add(bullet);
             vecBul.add(bullet2);
             vecBul.add(bullet3);
         }
     }
 
-
-    public int getShootType() {
-        return shootType;
+    @Override
+    public void update(String msg) {
+        if (msg.equalsIgnoreCase("Bo Vua An Duoc Qua")) {
+            System.out.println("Thang Player Vua An Duoc Qua Roi");
+        }
     }
 
-    public void setShootType(int shootType) {
-        this.shootType = shootType;
+    public int getWidth() {
+        return this.sprite.getWidth();
+    }
+
+    public int getHeight() {
+        return this.sprite.getHeight();
     }
 }
