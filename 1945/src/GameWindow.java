@@ -32,7 +32,7 @@ public class GameWindow extends Frame implements Runnable {
     BufferedImage background;
     Vector<PlaneEnemy> vectorPlaneEnemy;
     Vector<OtherObject> vectorObject = new Vector<>();
-    Vector<RandomBird> vectorBird = new Vector<>();
+    Vector<RandomBird> vectorBird;
     BulletEnemy b;
     Vector<GiftBox> giftBoxVector = new Vector<>();
     GiftBox giftBox;
@@ -66,6 +66,7 @@ public class GameWindow extends Frame implements Runnable {
         } catch (IOException e) {
         }
         vectorPlaneEnemy = PlaneEnemyManager.getInstance().getPlaneEnemyVector();
+        vectorBird = RandomBirdManager.getInstance().getRandomBirdVector();
         initPlane();
         PlaneManager.getInstance().getPlaneMoveByKey().setHealth(200);
         PlaneManager.getInstance().getPlaneMoveByMouse().setHealth(200);
@@ -218,7 +219,8 @@ public class GameWindow extends Frame implements Runnable {
             }
 
             if(GiftBox.destroyAll){
-                vectorPlaneEnemy.clear();
+                vectorPlaneEnemy.removeAll(vectorPlaneEnemy);
+                vectorBird.removeAll(vectorBird);
             }
 
             PlaneManager.getInstance().getPlaneMoveByKey().update();

@@ -9,6 +9,7 @@ import java.util.Vector;
  */
 public class BulletPlayer extends Bullet {
     private Vector<PlaneEnemy> planeEnemyVector = PlaneEnemyManager.getInstance().getPlaneEnemyVector();
+    private Vector<RandomBird> randomBirdVector = RandomBirdManager.getInstance().getRandomBirdVector();
 
     public BulletPlayer(int positionX, int positionY, int speed) {
         super(positionX, positionY, speed);
@@ -20,16 +21,27 @@ public class BulletPlayer extends Bullet {
 
     public void checkCollision() {
         Rectangle rectBullet = new Rectangle((int) positionX, (int) positionY, sprite.getWidth(), sprite.getHeight());
-        for (int i = 0; i < planeEnemyVector.size(); i++) {
+        for (int i = 0; i < planeEnemyVector.size() ; i++) {
             Rectangle rectPlaneEnemy = new Rectangle((int) planeEnemyVector.get(i).getPositionX()
                     , (int) planeEnemyVector.get(i).getPositionY()
                     , planeEnemyVector.get(i).getSprite().getWidth()
                     , planeEnemyVector.get(i).getSprite().getHeight());
+
             if (rectBullet.intersects(rectPlaneEnemy)) {
                 planeEnemyVector.remove(i);
             }
         }
+        for (int i = 0; i < randomBirdVector.size() ; i++){
+            Rectangle rectRandomBird = new Rectangle((int) randomBirdVector.get(i).getPositionX()
+                    , (int) randomBirdVector.get(i).getPositionY()
+                    , randomBirdVector.get(i).getSprite().getWidth()
+                    , randomBirdVector.get(i).getSprite().getHeight());
+            if(rectBullet.intersects(rectRandomBird)){
+                randomBirdVector.remove(i);
+            }
+        }
     }
+
 
     @Override
     public void move() {

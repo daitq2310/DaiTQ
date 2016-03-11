@@ -2,14 +2,12 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 /**
  * Created by Quang Đại on 7/3/2016.
  */
 public class RandomBird extends GameObject {
-    private int moveType;
-    private int elip = 0;
-
     private int xVelocity = 1;
     private int yVelocity = 1;
     private static final int RIGHT_WALL = 1000;
@@ -50,11 +48,6 @@ public class RandomBird extends GameObject {
         }
     }
 
-    private void randomPosition() {
-        this.positionX = LEFT_WALL + (int) (Math.random() * (RIGHT_WALL - LEFT_WALL));
-        this.positionY = UP_WALL + (int) (Math.random() * (DOWN_WALL - UP_WALL));
-    }
-
     private void randomDirection() {
         double speed = 2.0;
         double direction = Math.random() * 2 * Math.PI;
@@ -62,7 +55,7 @@ public class RandomBird extends GameObject {
         yVelocity = (int) (speed * Math.sin(direction));
     }
 
-    public void update() {
+        public void update() {
         this.move();
     }
 
