@@ -74,15 +74,21 @@ public class PlaneEnemy extends PlaneAbstract implements Observer {
             this.shoot();
             count = 0;
         }
-        for (BulletEnemy bul : vecBul) {
-            bul.update();
-        }
+
         if (styleMove == 1)
             this.move();
         if (styleMove == 2)
             this.moveCircleEllipse();
         if (styleMove == 3)
             this.moveSineWave();
+        for (int i = 0; i < vecBul.size(); i++) {
+            if (vecBul.get(i).checkCollisionPlaneMoveByKey() || vecBul.get(i).checkCollisionPlaneMoveByMouse()) {
+                vecBul.remove(i);
+            }
+        }
+        for (BulletEnemy bul : vecBul) {
+            bul.update();
+        }
     }
 
     @Override
